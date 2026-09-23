@@ -1,6 +1,6 @@
 # Kal Se Nahi
 
-Kal Se Nahi is a local competition prototype for **GoalGuard’s re-entry mode**: a person misses a movement session, the agent offers the smallest agreed next step, and it only uses a pre-approved demo allowance when evidence and permission are clear.
+Kal Se Nahi is a local competition prototype for protecting and recovering a movement commitment: when a planned session is disrupted or missed, the agent offers the smallest agreed next step and only uses a pre-approved demo allowance when evidence and permission are clear.
 
 The current build is designed to be honest in a judge demo:
 
@@ -10,7 +10,7 @@ The current build is designed to be honest in a judge demo:
 
 ## Run it
 
-Requires Node 22.13+. The built interface loads React and icons from a browser module CDN, so opening it also needs internet access. `npm install` is only needed when Vite is not already available on your machine.
+Requires Node 22.13+. The interface now uses the locally installed React and icon packages, so the demo no longer depends on a browser module CDN. Run `npm install` once before building.
 
 ```bash
 npm install

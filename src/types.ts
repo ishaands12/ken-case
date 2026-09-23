@@ -2,7 +2,7 @@ export type Mode = 'recovery' | 'stake' | 'none';
 export interface Charter {
   version: number; name: string; routine: string; days: string[]; time: string; flexibilityMinutes: number; fallbackMinutes: number;
   mode: Mode; autonomy: 'L2' | 'L3'; budgetPaise: number; maxActionPaise: number; stakePaise: number; weeklyStakeCapPaise: number;
-  language: 'en-IN' | 'hi-IN'; quietStart: string; quietEnd: string; active: boolean; paused: boolean; healthPaused: boolean;
+  language: 'en-IN' | 'hi-IN' | 'hi-en'; quietStart: string; quietEnd: string; active: boolean; paused: boolean; healthPaused: boolean;
   evidenceSources: string[]; allowedActionIds: string[]; address: string;
 }
 export interface ActionOption { id: string; title: string; description: string; amountPaise: number; durationMinutes: number; merchant: string; category: string; kind: 'booking' | 'fallback' }

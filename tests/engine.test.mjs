@@ -264,3 +264,9 @@ test('successful transitions also preserve the previous immutable state', () => 
   confirm(state);
   assert.deepEqual(state, snapshot);
 });
+
+
+test('Hinglish can be stored as an explicit voice preference', () => {
+  const state = saved({ language: 'hi-en' });
+  assert.equal(state.charter.language, 'hi-en');
+});
