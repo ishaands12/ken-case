@@ -1,10 +1,10 @@
 # Round 2 — Assembly submission v2
 
 **Opening:** Sticking to the goal  
-**Agent:** **GoalGuard: Kal Se Nahi**  
+**Agent:** **Kal Se Nahi**  
 **Core idea:** a **commitment compiler + zero-trust runtime**, not a motivation bot.
 
-A user states a goal in ordinary language. GoalGuard compiles it into a versioned **Goal Charter**: schedule, fallback ladder, evidence rules, autonomy, allowed actions, quiet hours and bounded money authority. At runtime, the language model may converse and suggest; a deterministic policy engine decides whether an action is permitted. The rails execute only what the Charter authorises.
+A user states a goal in ordinary language. Kal Se Nahi compiles it into a versioned **Goal Charter**: schedule, fallback ladder, evidence rules, autonomy, allowed actions, quiet hours and bounded money authority. At runtime, the language model may converse and suggest; a deterministic policy engine decides whether an action is permitted. The rails execute only what the Charter authorises.
 
 The technical primitive that makes this different is **proof-gated delegation**: “this agent may spend up to ₹200” is insufficient. A consequential action should also be bound to the exact Charter version and the evidence condition that justified it.
 
@@ -12,7 +12,7 @@ The technical primitive that makes this different is **proof-gated delegation**:
 
 ## Q1. What is the outcome your agent is accountable for?
 
-**GoalGuard is accountable for keeping a chosen movement commitment alive: every at-risk session should end in verified original completion, verified fallback completion, or a verified re-entry within 24 hours of a confirmed lapse.**
+**Kal Se Nahi is accountable for keeping a chosen movement commitment alive: every at-risk session should end in verified original completion, verified fallback completion, or a verified re-entry within 24 hours of a confirmed lapse.**
 
 Why this is measurable:
 - original completion;
@@ -26,7 +26,7 @@ Why this is measurable:
 
 ### L3
 
-The most consequential thing GoalGuard can do without asking again is move a **bounded amount of money** or apply a **bounded stake** under a Goal Charter the user explicitly approved in advance.
+The most consequential thing Kal Se Nahi can do without asking again is move a **bounded amount of money** or apply a **bounded stake** under a Goal Charter the user explicitly approved in advance.
 
 The autonomy is not global. It exists inside an **autonomy envelope**:
 
@@ -50,13 +50,13 @@ Examples:
 
 This is **risk-adaptive L3**: more irreversible actions require stronger evidence.
 
-It is not L4 because GoalGuard cannot invent goals, choose arbitrary merchants, resolve ambiguous evidence by itself, or decide that a human outcome occurred without proof.
+It is not L4 because Kal Se Nahi cannot invent goals, choose arbitrary merchants, resolve ambiguous evidence by itself, or decide that a human outcome occurred without proof.
 
 ---
 
 ## Q3. What states does the agent go through?
 
-GoalGuard has two connected loops: **Protect Mode** before a miss and **Kal Se Nahi / Re-entry Mode** after a confirmed lapse.
+Kal Se Nahi has two connected loops: **Protect Mode** before a miss and **Kal Se Nahi / Re-entry Mode** after a confirmed lapse.
 
 ```mermaid
 stateDiagram-v2
@@ -91,7 +91,7 @@ stateDiagram-v2
 
 ### The key design rule
 
-GoalGuard always attempts the **least irreversible intervention** that can still save the commitment:
+Kal Se Nahi always attempts the **least irreversible intervention** that can still save the commitment:
 
 1. stay silent;
 2. keep the original plan;
@@ -119,7 +119,7 @@ A captured payment followed by failed fulfilment blocks a second debit until rec
 
 | Capability | State | Rail | Send | Receive | Failure | Must never | Today | Build |
 |---|---|---|---|---|---|---|---|---|
-| outbound intervention | at-risk / lapse | Gnani | phone, user label, Goal episode ref | call request + later conversation result | no answer, unwhitelisted number, provider error | call outside quiet hours | Trigger Test Call exists | connect to GoalGuard scheduler |
+| outbound intervention | at-risk / lapse | Gnani | phone, user label, Goal episode ref | call request + later conversation result | no answer, unwhitelisted number, provider error | call outside quiet hours | Trigger Test Call exists | connect to Kal Se Nahi scheduler |
 | live conversation | check-in | Gnani | prompt, dynamic Goal Charter context | transcript / disposition | ASR ambiguity, language switch | treat conversational ambiguity as money authority | Agent Builder + STT/TTS exist | connect Agent Builder |
 | on-call action | user chooses a path | Gnani | structured action request to our backend | allowed action / blocked reason | API timeout | bypass policy engine | custom HTTP actions exist | connect to `/goalguard/action` |
 | low-confidence confirmation | consequential L2 choice | Gnani | exact numbered options | keypad digits | no input / invalid digit | infer a payment choice from noisy speech | DTMF exists | build confirmation policy |
@@ -134,7 +134,7 @@ Grantex already answers:
 
 > “May this agent initiate a payment, and what is the maximum amount?”
 
-GoalGuard needs the rail to be able to answer:
+Kal Se Nahi needs the rail to be able to answer:
 
 > “May this agent initiate **this** payment **because this exact user-approved behavioural condition has been satisfied**?”
 
@@ -172,7 +172,7 @@ Voice proves a conversation occurred. P3P proves money moved. Delhivery proves a
 
 > “Did the human actually do the thing?”
 
-The Outcome Attestation Rail would let approved issuers—e.g. a gym QR system, Health Connect-connected fitness app, learning platform, or savings platform—return only the minimum proof GoalGuard needs.
+The Outcome Attestation Rail would let approved issuers—e.g. a gym QR system, Health Connect-connected fitness app, learning platform, or savings platform—return only the minimum proof Kal Se Nahi needs.
 
 ```json
 {
@@ -187,7 +187,7 @@ The Outcome Attestation Rail would let approved issuers—e.g. a gym QR system, 
 }
 ```
 
-GoalGuard receives **pass/fail/unknown**, not raw GPS trails, messages or full health history.
+Kal Se Nahi receives **pass/fail/unknown**, not raw GPS trails, messages or full health history.
 
 ### Company: Finvu (Cookiejar Technologies)
 
@@ -230,7 +230,7 @@ After a confirmed lapse:
 
 For L2, the exact action is confirmed every time. If ASR is uncertain for a consequential choice, the voice flow can fall back to DTMF instead of guessing.
 
-For L3, a choice inside the exact Charter can execute without another approval; outside the Charter, GoalGuard stops.
+For L3, a choice inside the exact Charter can execute without another approval; outside the Charter, Kal Se Nahi stops.
 
 The companion screen shows:
 - current state;
@@ -246,10 +246,11 @@ The companion screen shows:
 
 ## Q7. What is the name?
 
-# **GoalGuard: Kal Se Nahi**
+# **Kal Se Nahi: Kal Se Nahi**
 
-**GoalGuard** is the commitment runtime.  
-**Kal Se Nahi** is its re-entry protocol when the original plan has already broken.
+# **Kal Se Nahi**
+
+One agent handles both parts of the commitment lifecycle: **Protect Mode** before a miss and **Re-entry Mode** after one.
 
 **Tagline:** *Protect the promise. Make the comeback small.*
 
@@ -268,7 +269,7 @@ Cult.fit already sits closest to the full movement loop:
 
 That gives it something ordinary habit apps lack: **intent, intervention inventory and proof** in the same system.
 
-But GoalGuard is not simply a Cult.fit feature. Its differentiator is the cross-context **Goal Charter**: it can defend a commitment against calendar conflict, route feasibility and user-authorised external rails, distinguish ambiguity from failure, and carry the commitment logic beyond fitness into study or savings.
+But Kal Se Nahi is not simply a Cult.fit feature. Its differentiator is the cross-context **Goal Charter**: it can defend a commitment against calendar conflict, route feasibility and user-authorised external rails, distinguish ambiguity from failure, and carry the commitment logic beyond fitness into study or savings.
 
 This intentionally preserves our Round 1 answer rather than changing companies between rounds.
 
