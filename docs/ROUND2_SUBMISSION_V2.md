@@ -189,11 +189,13 @@ The Outcome Attestation Rail would let approved issuers—e.g. a gym QR system, 
 
 GoalGuard receives **pass/fail/unknown**, not raw GPS trails, messages or full health history.
 
-### Company: HealthifyMe
+### Company: Finvu (Cookiejar Technologies)
 
-HealthifyMe already works with workout/step signals and Health Connect. We would want it to expose those signals as a privacy-minimised, signed **activity attestation API**, rather than another dashboard of raw health data.
+We would want **Finvu**, an RBI-regulated Indian Account Aggregator, to build this as a new non-financial attestation rail. The reason is architectural, not because Finvu currently has fitness data: Account Aggregators are designed to be **data-blind consent infrastructure**. Finvu already manages purpose-bound, revocable consent and digitally signed consent artefacts for verified financial data.
 
-The design borrows a principle from India's Account Aggregator ecosystem: consent should encode purpose, duration and revocability; the consumer of the data should receive only what the purpose requires.
+The proposed rail would extend that design pattern—not the regulated AA data scope—to behavioural issuers such as gym QR systems, Health Connect-connected apps or learning platforms. Finvu would route the user's consent and the signed minimum attestation; it would not need to store the raw underlying behavioural history.
+
+That makes the fourth rail neutral infrastructure instead of another habit app.
 
 ---
 
