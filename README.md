@@ -10,7 +10,7 @@ The current build is designed to be honest in a judge demo:
 
 ## Run it
 
-Requires Node 22.13+. The built interface loads React and icons from a browser module CDN, so opening it also needs internet access. `npm install` is only needed when Vite is not already available on your machine.
+Requires Node 22.13+. The interface now uses the locally installed React and icon packages, so the demo no longer depends on a browser module CDN. Run `npm install` once before building.
 
 ```bash
 npm install
