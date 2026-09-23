@@ -1,6 +1,6 @@
 # Kal Se Nahi
 
-Kal Se Nahi is a local competition prototype for **GoalGuard’s re-entry mode**: a person misses a movement session, the agent offers the smallest agreed next step, and it only uses a pre-approved demo allowance when evidence and permission are clear.
+Kal Se Nahi is a local competition prototype for protecting and recovering a movement commitment: when a planned session is disrupted or missed, the agent offers the smallest agreed next step and only uses a pre-approved demo allowance when evidence and permission are clear.
 
 The current build is designed to be honest in a judge demo:
 
