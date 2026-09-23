@@ -246,8 +246,6 @@ The companion screen shows:
 
 ## Q7. What is the name?
 
-# **Kal Se Nahi: Kal Se Nahi**
-
 # **Kal Se Nahi**
 
 One agent handles both parts of the commitment lifecycle: **Protect Mode** before a miss and **Re-entry Mode** after one.
