@@ -117,7 +117,7 @@ function saveCharter(state, value) {
   if (c.budgetPaise < state.spentPaise) invalid('Your new allowance cannot be less than the amount already used.');
   if (c.stakePaise > c.weeklyStakeCapPaise) invalid('Per-miss stake cannot exceed its weekly cap.');
   if (c.weeklyStakeCapPaise < state.stakeSpentPaise) invalid('Your weekly cap cannot be less than demo stakes already recorded.');
-  if (!['recovery', 'stake', 'none'].includes(c.mode) || !['L2', 'L3'].includes(c.autonomy) || !['hi-IN', 'en-IN'].includes(c.language)) invalid('Invalid mode, autonomy or language.');
+  if (!['recovery', 'stake', 'none'].includes(c.mode) || !['L2', 'L3'].includes(c.autonomy) || !['hi-IN', 'en-IN', 'hi-en'].includes(c.language)) invalid('Invalid mode, autonomy or language.');
   if (!Number.isInteger(c.fallbackMinutes) || c.fallbackMinutes < 1 || c.fallbackMinutes > 60 || !Number.isInteger(c.flexibilityMinutes) || c.flexibilityMinutes < 0 || c.flexibilityMinutes > 180) invalid('Use a fallback of 1–60 minutes and flexibility of 0–180 minutes.');
   const lists = { days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], evidenceSources: ['calendar','attendance','self_report','buddy'], allowedActionIds: CATALOG.map(a => a.id) };
   for (const [key, allowed] of Object.entries(lists)) {
