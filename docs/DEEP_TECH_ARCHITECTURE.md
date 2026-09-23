@@ -1,10 +1,10 @@
-# GoalGuard deep-tech architecture
+# Kal Se Nahi deep-tech architecture
 
 ## One-line system thesis
 
 **The model suggests; the policy decides; the rails execute; proof closes the loop.**
 
-GoalGuard is designed as a zero-trust agent runtime for long-horizon personal commitments.
+Kal Se Nahi is designed as a zero-trust agent runtime for long-horizon personal commitments.
 
 ## 1. Commitment compiler
 
@@ -96,7 +96,7 @@ It should not expose raw history unless separately needed.
 
 Payments, booking, voice and proof cannot be made truly atomic across independent providers.
 
-GoalGuard therefore uses compensating transactions:
+Kal Se Nahi therefore uses compensating transactions:
 
 ```
 PREPARE
