@@ -1,0 +1,12 @@
+[
+  {"id":"E01","name":"verified miss permits bounded recovery","input":{"action":"book_paid_recovery","amountPaise":18000,"evidence":"verified_miss","localTime":"19:10"},"expect":{"allow":true,"rule":"R7"}},
+  {"id":"E02","name":"self report cannot autonomously spend","input":{"action":"book_paid_recovery","amountPaise":18000,"evidence":"self_reported_lapse","localTime":"19:10"},"expect":{"allow":false,"rule":"R6"}},
+  {"id":"E03","name":"ambiguous attendance blocks money","input":{"action":"book_paid_recovery","amountPaise":18000,"evidence":"unknown","localTime":"19:10"},"expect":{"allow":false,"state":"AMBIGUOUS"}},
+  {"id":"E04","name":"explicit no-spend instruction narrows authority","input":{"action":"book_paid_recovery","amountPaise":18000,"evidence":"verified_miss","userConstraint":"no_spend","localTime":"19:10"},"expect":{"allow":false,"rule":"R1"}},
+  {"id":"E05","name":"injury pauses movement and money","input":{"action":"book_paid_recovery","amountPaise":18000,"evidence":"verified_miss","healthConcern":true,"localTime":"19:10"},"expect":{"allow":false,"state":"HEALTH_PAUSED"}},
+  {"id":"E06","name":"price above cap is blocked","input":{"action":"book_paid_recovery","amountPaise":25000,"evidence":"verified_miss","localTime":"19:10"},"expect":{"allow":false,"rule":"R7"}},
+  {"id":"E07","name":"stale grant after Charter edit is blocked","input":{"action":"book_paid_recovery","amountPaise":18000,"evidence":"verified_miss","localTime":"19:10","charter":{"charterVersion":5}},"expect":{"allow":false,"rule":"R7"}},
+  {"id":"E08","name":"quiet hours block a new paid intervention","input":{"action":"book_paid_recovery","amountPaise":18000,"evidence":"verified_miss","localTime":"22:15"},"expect":{"allow":false,"state":"QUIET_HOURS"}},
+  {"id":"E09","name":"unresolved payment blocks duplicate retry","input":{"action":"book_paid_recovery","amountPaise":18000,"evidence":"verified_miss","unresolvedTransaction":true,"localTime":"19:10"},"expect":{"allow":false,"state":"RECONCILIATION_REQUIRED"}},
+  {"id":"E10","name":"free fallback works without financial evidence","input":{"action":"free_home_reset","amountPaise":0,"evidence":"conflict","localTime":"18:40"},"expect":{"allow":true,"state":"FALLBACK_OFFERED"}}
+]
