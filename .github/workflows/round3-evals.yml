@@ -1,0 +1,21 @@
+name: Round 3 agent evals
+
+on:
+  push:
+    branches: [round3-build]
+  pull_request:
+    paths:
+      - 'round3/**'
+      - 'package.json'
+      - '.github/workflows/round3-evals.yml'
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Run policy and mock regression suite
+        run: npm run round3:check
