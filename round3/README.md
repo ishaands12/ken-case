@@ -11,7 +11,7 @@ This folder turns the Round 2 policy prototype into a connector-driven agent pac
 - deterministic failure behavior and idempotency;
 - **23 executable policy evals + 10 Node mock/adversarial tests = 33 local Round 3 checks**;
 - 36-case Pine-hosted adversarial matrix for stochastic/tool-use testing;
-- connector contract, Ishaan handoff, and prompt changelog.
+- connector contract, Ishaan handoff, prompt changelog, and world-class release gates.
 
 ## Current final prompt
 Use `system-prompts/v4-adversarial-final.md` as the starting prompt in Pine. It adds fail-closed route/inventory gates, grant expiry, untrusted-tool-output handling, secret boundaries, and point-of-consequence revalidation.
@@ -25,6 +25,11 @@ npm run round3:mock
 ```
 
 Current independently rerun deterministic result after the adversarial audit: **33/33 Round 3 checks pass**.
+
+## Engineering handoff
+- `ISHAAN_HANDOFF.md` — exact review/deploy/Pine tasks for Ishaan.
+- `WORLD_CLASS_BENCHMARK.md` — what is proven, what is not, and no-go gates.
+- `evals/PINE_ADVERSARIAL_MATRIX.md` — 36 Pine-hosted cases; preserve failures.
 
 ## Pine platform setup order
 1. Join `Ken's case competition` org.
