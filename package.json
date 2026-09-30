@@ -9,7 +9,11 @@
     "build": "vite build",
     "start": "node server/index.mjs --production",
     "test": "node --test tests/*.test.mjs",
-    "check": "npm test && npm run build"
+    "round3:eval": "node round3/evals/run-evals.mjs",
+    "round3:test": "node --test round3/evals/mock-server.test.mjs",
+    "round3:check": "npm run round3:eval && npm run round3:test",
+    "round3:mock": "node round3/mock-server.mjs",
+    "check": "npm test && npm run round3:check && npm run build"
   },
   "dependencies": { "react": "19.2.3", "react-dom": "19.2.3", "lucide-react": "0.468.0" },
   "devDependencies": { "@types/react": "19.2.14", "@types/react-dom": "19.2.3", "@types/node": "22.16.5", "vite": "6.4.3", "typescript": "5.8.3" }
