@@ -15,6 +15,7 @@ export const DEFAULT_CHARTER = Object.freeze({
   allowedActions: ['free_home_reset', 'book_paid_recovery'],
   evidenceSources: ['partner_attendance', 'self_report', 'route'],
   fallbackMinutes: 20,
+  automaticPaidRecovery: false,
   grant: { active: true, charterVersion: 4, mode: 'recovery', expiresAt: '2026-10-31T18:29:59.000Z' },
 });
 
@@ -35,6 +36,12 @@ function grantExpired(grant, nowIso) {
   return Number.isFinite(expiry) && Number.isFinite(now) && expiry <= now;
 }
 
+function nonVerifiedEvidenceState(evidence) {
+  if (evidence === 'unknown') return 'AMBIGUOUS';
+  if (evidence === 'self_reported_lapse' || evidence === 'self_reported_completion') return 'SELF_REPORTED';
+  return 'BLOCKED';
+}
+
 export function evaluateAction(input) {
   const c = { ...DEFAULT_CHARTER, ...(input.charter || {}) };
   const action = input.action;
@@ -50,18 +57,20 @@ export function evaluateAction(input) {
   if (['not_now','leave_me_alone'].includes(explicitUserConstraint)) return { allow: false, state: 'SNOOZED', rule: 'R1', reason: 'Current user instruction stops this episode.' };
   if (inQuietHours(input.localTime, c.quietStart, c.quietEnd)) return { allow: false, state: 'QUIET_HOURS', rule: 'R4', reason: 'No new intervention or spend inside quiet hours.' };
   if (input.unresolvedTransaction) return { allow: false, state: 'RECONCILIATION_REQUIRED', rule: 'R8', reason: 'Reconcile an uncertain/captured transaction before any retry.' };
-  if (explicitUserConstraint === 'no_spend' && moneyAction(action, amountPaise)) return { allow: false, state: 'REENTRY_READY', rule: 'R1', reason: 'Current explicit user instruction narrows the Charter: no money.' };
+  if (explicitUserConstraint === 'no_spend' && moneyAction(action, amountPaise)) return { allow: false, state: currentState || 'SELF_REPORTED', rule: 'R1', reason: 'Current explicit user instruction narrows the Charter: no money.' };
   if (!c.allowedActions.includes(action)) return { allow: false, state: 'BLOCKED', rule: 'R5', reason: 'Action is outside the allow-list.' };
 
   if (moneyAction(action, amountPaise)) {
     if (amountPaise <= 0) return { allow: false, state: 'BLOCKED', rule: 'R7', reason: 'A consequential money action must declare a positive amount.' };
-    if (evidence !== 'verified_miss') return { allow: false, state: evidence === 'unknown' ? 'AMBIGUOUS' : 'REENTRY_READY', rule: 'R6', reason: 'Self-report, missing data, or ambiguity cannot autonomously move money.' };
-    if (currentState !== 'REENTRY_READY') return { allow: false, state: currentState || 'BLOCKED', rule: 'R7', reason: 'Paid recovery is only authorised from REENTRY_READY.' };
+    if (evidence !== 'verified_miss') return { allow: false, state: nonVerifiedEvidenceState(evidence), rule: 'R6', reason: 'Self-report, missing data, or ambiguity cannot autonomously move money.' };
+    if (currentState !== 'REENTRY_READY') return { allow: false, state: currentState || 'BLOCKED', rule: 'R7', reason: 'Paid recovery is only authorised from REENTRY_READY after trusted miss proof.' };
+    if (PAID_RECOVERY_ACTIONS.has(action) && input.explicitRecoveryRequest !== true && c.automaticPaidRecovery !== true) return { allow: false, state: 'REENTRY_READY', rule: 'R10', reason: 'Verified miss alone is not a current request to spend or book; offer free fallback or clarify.' };
     if (!c.grant?.active || c.grant.charterVersion !== c.charterVersion || c.grant.mode !== c.moneyMode || grantExpired(c.grant, nowIso)) return { allow: false, state: 'BLOCKED', rule: 'R7', reason: 'Financial grant is absent, stale, expired, or for a different money mode.' };
     if (action === 'book_paid_recovery' && c.moneyMode !== 'recovery') return { allow: false, state: 'BLOCKED', rule: 'R7', reason: 'Paid recovery requires Recovery Credit mode.' };
     if (action === 'apply_stake' && c.moneyMode !== 'stake') return { allow: false, state: 'BLOCKED', rule: 'R7', reason: 'A stake requires Stake mode.' };
     if (amountPaise > c.maxActionPaise) return { allow: false, state: 'REENTRY_READY', rule: 'R7', reason: 'Price exceeds per-action cap.' };
     if (amountPaise > c.remainingBudgetPaise) return { allow: false, state: 'REENTRY_READY', rule: 'R7', reason: 'Insufficient authorised budget.' };
+    if (Number.isInteger(input.selectedOptionPricePaise) && amountPaise !== input.selectedOptionPricePaise) return { allow: false, state: 'BLOCKED', rule: 'R18', reason: 'Payment amount must exactly match the validated selected option price.' };
     if (PAID_RECOVERY_ACTIONS.has(action) && input.routeFeasible !== true) return { allow: false, state: input.routeFeasible === false ? 'REENTRY_READY' : 'AMBIGUOUS', rule: 'R7', reason: 'Paid physical recovery requires an explicit feasible route/time result.' };
   }
 
@@ -73,11 +82,12 @@ export function evaluateAction(input) {
 export function chooseRecoveryOption({ options, routeByOption = {}, charter = DEFAULT_CHARTER }) {
   const allowed = options
     .filter(o => charter.allowedActions.includes(o.action || 'book_paid_recovery'))
+    .filter(o => typeof o.id === 'string' && o.id.length > 0)
     .filter(o => Number.isInteger(o.pricePaise) && o.pricePaise > 0)
     .filter(o => Number.isInteger(o.seats) && o.seats > 0)
     .filter(o => o.pricePaise <= charter.maxActionPaise && o.pricePaise <= charter.remainingBudgetPaise)
     .filter(o => routeByOption[o.id]?.feasible === true)
     .filter(o => Number.isFinite(o.startMinutesFromNow) && o.startMinutesFromNow >= 0)
-    .sort((a, b) => (a.startMinutesFromNow - b.startMinutesFromNow) || (a.pricePaise - b.pricePaise));
+    .sort((a, b) => (a.startMinutesFromNow - b.startMinutesFromNow) || (a.pricePaise - b.pricePaise) || a.id.localeCompare(b.id));
   return allowed[0] || null;
 }
